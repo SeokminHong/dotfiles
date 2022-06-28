@@ -39,6 +39,12 @@ jobs:
           if [ $? -eq 0 ]; then
             echo "::set-output name=version::$(git show branch:file)"
           fi
+      - name: Print versions
+        run: |
+          echo "starship: ${{ steps.starship.outputs.release }}"
+          echo "local: ${{ steps.local.outputs.version }}"
+          echo "branch: ${{ steps.branch.outputs.version }}"
+      
   build:
     name: ${{ matrix.job.target }} (${{ matrix.job.os }})
     needs: check-version
