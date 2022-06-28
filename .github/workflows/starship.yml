@@ -37,7 +37,7 @@ jobs:
           set +e
           git show-ref --verify --quiet refs/heads/starship
           if [ $? -eq 0 ]; then
-            echo "::set-output name=version::$(git show branch:file)"
+            echo "::set-output name=version::$(git show starship:.config/fish/store/starship/version)"
           fi
       - name: Print versions
         run: |
