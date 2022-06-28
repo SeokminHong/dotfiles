@@ -8,6 +8,7 @@ set -g theme_display_date no
 set -g theme_show_exit_status yes
 set -g theme_display_cmd_duration yes
 
+# Abbreviations
 abbr --add --global -- cat 'bat'
 abbr --add --global -- ls 'exa'
 abbr --add --global -- ll 'exa -lha'
