@@ -1,4 +1,4 @@
-name: Fetch Starship
+name: Update Starship
 
 on:
   schedule:
@@ -7,16 +7,32 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  check-version:
     runs-on: ubuntu-latest
-
+    outputs:
+      starship: ${{ steps.starship.outputs.release }}
+      local: ${{ steps.local.outputs.version }}
     steps:
+      - uses: actions/checkout@v3
       - id: starship
         uses: pozetroninc/github-action-get-latest-release@master
         with:
           owner: starship
           repo: starship
           excludes: prerelease, draft
-      - name: Print version
+      - name: Local version
+        id: local
+        shell: bash
         run: |
-          echo ${{ steps.starship.outputs.release }}
+          if test -f ".config/fish/store/starship/version"; then
+              echo "::set-output name=version::$(cat .config/fish/store/starship/version)"
+          fi
+  update-starship:
+    runs-on: ubuntu-latest
+    if: ${{ jobs.check-version.outputs.starship != jobs.check-version.outputs.local }}
+    steps:
+      - name: Print versions
+        run: |
+          echo "Remote: ${{ jobs.check-version.outputs.starship }}"
+          echo "Local: ${{ jobs.check-version.outputs.local }}"
+      #- uses: actions/checkout@v3
