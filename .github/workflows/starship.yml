@@ -117,7 +117,7 @@ jobs:
           author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           token: ${{ secrets.PAT }}
           branch: starship
-          reviewers: SeokminHong
+          assignees: SeokminHong
           commit-message: Update Starship
           delete-branch: true
           title: Update Starship (${{ needs.check-version.outputs.starship }})
