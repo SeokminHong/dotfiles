@@ -34,6 +34,6 @@ jobs:
     steps:
       - name: Print versions
         run: |
-          echo "Remote: ${{ jobs.check-version.outputs.starship }}"
-          echo "Local: ${{ jobs.check-version.outputs.local }}"
+          echo "Remote: ${{ needs.check-version.outputs.starship }}"
+          echo "Local: ${{ needs.check-version.outputs.local }}"
       #- uses: actions/checkout@v3
