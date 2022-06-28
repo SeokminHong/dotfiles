@@ -29,7 +29,8 @@ jobs:
           fi
   update-starship:
     runs-on: ubuntu-latest
-    if: ${{ jobs.check-version.outputs.starship != jobs.check-version.outputs.local }}
+    needs: check-version
+    if: ${{ needs.check-version.outputs.starship != needs.check-version.outputs.local }}
     steps:
       - name: Print versions
         run: |
