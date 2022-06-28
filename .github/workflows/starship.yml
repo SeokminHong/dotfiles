@@ -68,6 +68,12 @@ jobs:
           repository: starship/starship
           tag: ${{ needs.check-version.outputs.starship }}
           fileName: starship-${{ matrix.job.target }}.tar.gz
+      - name: Rename release binary
+        if: ${{ !matrix.job.build }}
+        run: |
+          tar -xzf "starship-${{ matrix.job.target }}.tar.gz"
+          mv starship "starship-${{ matrix.job.target }}"
+          tar -czf "starship-${{ matrix.job.target }}.tar.gz" "starship-${{ matrix.job.target }}"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
