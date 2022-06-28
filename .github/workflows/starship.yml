@@ -36,9 +36,9 @@ jobs:
         run: |
           set +e
           git branch -a
-          SHOW_REF=git show-ref --verify --quiet refs/heads/starship
+          SHOW_REF=$(git show-ref --verify --quiet refs/heads/starship)
           echo "$? / $SHOW_REF"
-          SHOW_BRANCH=git show-branch refs/remotes/origin/starship
+          SHOW_BRANCH=$(git show-branch refs/remotes/origin/starship)
           echo "$? / $SHOW_BRANCH"
           set -e
           exit 1
