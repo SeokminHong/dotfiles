@@ -3,6 +3,7 @@ if status is-interactive
 end
 
 # Theme (bobthefish)
+set -g theme_newline_cursor yes
 set -g theme_nerd_fonts yes
 set -g theme_display_date no
 set -g theme_show_exit_status yes
