@@ -34,11 +34,10 @@ jobs:
         id: branch
         shell: bash
         run: |
-          EXISTS=$(git show-branch refs/remotes/origin/starship | wc -l)
-          echo "$? / $EXISTS"
-          exit 1
-          #EXISTS=$(git ls-remote --heads starship | wc -l)
-          #if [ $EXISTS -eq 0 ]; then
+          echo $(git show remotes/origin/starship:.config/fish/store/starship/version)
+          exit 11
+          #EXISTS=$(git show-branch refs/remotes/origin/starship | wc -l)
+          #if [ $EXISTS -ne 0 ]; then
           #  echo "::set-output name=version::$(git show remotes/origin/starship:.config/fish/store/starship/version)"
           #fi
       - name: Print versions
