@@ -91,8 +91,8 @@ jobs:
           path: artifacts
       - name: Extract and move binaires
         run: |
-          for i in artifacts/*.tgz; do tar -xzf $i -C artifacts/; done
-          rm artifacts/*.tgz
+          for i in artifacts/*.tar.gz; do tar -xzf $i -C artifacts/; done
+          rm artifacts/*.tar.gz
           mv artifacts/* .config/fish/store/starship
           echo ${{ needs.check-version.outputs.starship }} > .config/fish/store/starship/version
       - name: Create Pull Request
