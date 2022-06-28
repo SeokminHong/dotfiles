@@ -34,10 +34,9 @@ jobs:
         id: branch
         shell: bash
         run: |
-          set +e
-          git show-ref --verify --quiet refs/heads/starship
-          if [ $? -eq 0 ]; then
-            echo "::set-output name=version::$(git show starship:.config/fish/store/starship/version)"
+          EXISTS=$(git ls-remote --heads git@github.com:user/repo.git branch-name | wc -l)
+          if [ $EXISTS -eq 0 ]; then
+            echo "::set-output name=version::$(git show remotes/origin/starship:.config/fish/store/starship/version)"
           fi
       - name: Print versions
         run: |
