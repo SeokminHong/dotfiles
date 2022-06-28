@@ -1,0 +1,3 @@
+[submodule ".config/fish/store/theme-bobthefish"]
+	path = .config/fish/store/theme-bobthefish
+	url = https://github.com/oh-my-fish/theme-bobthefish.git
