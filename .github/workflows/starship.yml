@@ -27,13 +27,81 @@ jobs:
           if test -f ".config/fish/store/starship/version"; then
               echo "::set-output name=version::$(cat .config/fish/store/starship/version)"
           fi
+  build:
+    name: ${{ matrix.job.target }} (${{ matrix.job.os }})
+    needs: check-version
+    runs-on: ${{ matrix.job.os }}
+    strategy:
+      matrix:
+        job:
+          - { target: x86_64-unknown-linux-gnu, os: ubuntu-20.04, build: false }
+          - { target: aarch64-unknown-linux-gnu, os: ubuntu-20.04, build: true }
+    steps:
+      - uses: actions/checkout@v3
+        if: ${{ matrix.job.build }}
+        with:
+          repository: starship/starship
+      - uses: actions-rs/toolchain@v1
+        if: ${{ matrix.job.build }}
+        with:
+          profile: minimal
+          toolchain: stable
+      - uses: Swatinem/rust-cache@v1
+        if: ${{ matrix.job.build }}
+      - name: Build
+        if: ${{ matrix.job.build }}
+        uses: actions-rs/cargo@v1.0.3
+        with:
+          command: build
+          args: --release --locked --target ${{ matrix.job.target }}
+          use-cross: true
+      - name: Rename built binary
+        if: ${{ matrix.job.build }}
+        run: |
+          ls "target/${{ matrix.job.target }}/release"
+          cp "target/${{ matrix.job.target }}/release/starship" "starship-${{ matrix.job.target }}"
+          tar -czf "starship-${{ matrix.job.target }}.tar.gz" "starship-${{ matrix.job.target }}"
+
+      - name: Download releases
+        if: ${{ !matrix.job.build }}
+        uses: robinraju/release-downloader@v1.4
+        with:
+          repository: starship/starship
+          tag: ${{ needs.check-version.outputs.starship }}
+          fileName: starship-${{ matrix.job.target }}.tar.gz
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: starship-${{ matrix.job.target }}.tar.gz
+      
+
   update-starship:
     runs-on: ubuntu-latest
-    needs: check-version
+    needs: [check-version, build]
     if: ${{ needs.check-version.outputs.starship != needs.check-version.outputs.local }}
     steps:
       - name: Print versions
         run: |
           echo "Remote: ${{ needs.check-version.outputs.starship }}"
           echo "Local: ${{ needs.check-version.outputs.local }}"
-      #- uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+      - name: Extract and move binaires
+        run: |
+          for i in artifacts/*.tgz; do tar -xzf $i -C artifacts/; done
+          rm artifacts/*.tgz
+          mv artifacts/* .config/fish/store/starship
+          echo ${{ needs.check-version.outputs.starship }} > .config/fish/store/starship/version
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.PAT }}
+          branch: starship
+          commit-message: Update Starship
+          delete-branch: true
+          title: Update Starship (${{ needs.check-version.outputs.starship }})
+          body: |
+            Update Starship
