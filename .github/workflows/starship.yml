@@ -41,7 +41,6 @@ jobs:
           echo "starship: ${{ steps.starship.outputs.release }}"
           echo "local: ${{ steps.local.outputs.version }}"
           echo "branch: ${{ steps.branch.outputs.version }}"
-          exit 1
       
   build:
     name: ${{ matrix.job.target }} (${{ matrix.job.os }})
