@@ -34,8 +34,9 @@ jobs:
         id: branch
         shell: bash
         run: |
-          EXISTS=$(git show-ref --verify --quiet refs/heads/starship)
-          if [ "$EXISTS" -eq 0 ]; then
+          set -e
+          git show-ref --verify --quiet refs/heads/starship
+          if [ $? -eq 0 ]; then
             echo "::set-output name=version::$(git show branch:file)"
           fi
   build:
