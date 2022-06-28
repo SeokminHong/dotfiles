@@ -73,6 +73,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
+          name: artifact
           path: starship-${{ matrix.job.target }}.tar.gz
       
 
@@ -88,6 +89,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         with:
+          name: artifact
           path: artifacts
       - name: Extract and move binaires
         run: |
