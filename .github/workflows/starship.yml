@@ -58,7 +58,6 @@ jobs:
       - name: Rename built binary
         if: ${{ matrix.job.build }}
         run: |
-          ls "target/${{ matrix.job.target }}/release"
           cp "target/${{ matrix.job.target }}/release/starship" "starship-${{ matrix.job.target }}"
           tar -czf "starship-${{ matrix.job.target }}.tar.gz" "starship-${{ matrix.job.target }}"
 
@@ -95,6 +94,7 @@ jobs:
         run: |
           for i in artifacts/*.tar.gz; do tar -xzf $i -C artifacts/; done
           rm artifacts/*.tar.gz
+          mkdir -p .config/fish/store/starship
           mv artifacts/* .config/fish/store/starship
           echo ${{ needs.check-version.outputs.starship }} > .config/fish/store/starship/version
       - name: Create Pull Request
