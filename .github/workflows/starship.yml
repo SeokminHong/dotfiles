@@ -34,13 +34,8 @@ jobs:
         id: branch
         shell: bash
         run: |
-          set +e
-          git branch -a
-          SHOW_REF=$(git show-ref --verify --quiet refs/heads/starship)
-          echo "$? / $SHOW_REF"
-          SHOW_BRANCH=$(git show-branch refs/remotes/origin/starship)
-          echo "$? / $SHOW_BRANCH"
-          set -e
+          EXISTS=$(git show-branch refs/remotes/origin/starship | wc -l)
+          echo "$? / $EXISTS"
           exit 1
           #EXISTS=$(git ls-remote --heads starship | wc -l)
           #if [ $EXISTS -eq 0 ]; then
