@@ -34,7 +34,7 @@ jobs:
         id: branch
         shell: bash
         run: |
-          set -e
+          set +e
           git show-ref --verify --quiet refs/heads/starship
           if [ $? -eq 0 ]; then
             echo "::set-output name=version::$(git show branch:file)"
