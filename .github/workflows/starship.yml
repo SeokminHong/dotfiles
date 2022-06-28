@@ -12,8 +12,11 @@ jobs:
     outputs:
       starship: ${{ steps.starship.outputs.release }}
       local: ${{ steps.local.outputs.version }}
+      branch: ${{ steps.branch.outputs.version }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - id: starship
         uses: pozetroninc/github-action-get-latest-release@master
         with:
@@ -27,9 +30,18 @@ jobs:
           if test -f ".config/fish/store/starship/version"; then
               echo "::set-output name=version::$(cat .config/fish/store/starship/version)"
           fi
+      - name: Branch version
+        id: branch
+        shell: bash
+        run: |
+          EXISTS=$(git show-ref --verify --quiet refs/heads/starship)
+          if [ "$EXISTS" -eq 0 ]; then
+            echo "::set-output name=version::$(git show branch:file)"
+          fi
   build:
     name: ${{ matrix.job.target }} (${{ matrix.job.os }})
     needs: check-version
+    if: ${{ needs.check-version.outputs.starship != needs.check-version.outputs.local && needs.check-version.outputs.starship != needs.check-version.outputs.branch }}
     runs-on: ${{ matrix.job.os }}
     strategy:
       matrix:
@@ -85,12 +97,7 @@ jobs:
   update-starship:
     runs-on: ubuntu-latest
     needs: [check-version, build]
-    if: ${{ needs.check-version.outputs.starship != needs.check-version.outputs.local }}
     steps:
-      - name: Print versions
-        run: |
-          echo "Remote: ${{ needs.check-version.outputs.starship }}"
-          echo "Local: ${{ needs.check-version.outputs.local }}"
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         with:
@@ -106,8 +113,10 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           token: ${{ secrets.PAT }}
           branch: starship
+          reviewers: SeokminHong
           commit-message: Update Starship
           delete-branch: true
           title: Update Starship (${{ needs.check-version.outputs.starship }})
