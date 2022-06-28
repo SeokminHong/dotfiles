@@ -34,17 +34,14 @@ jobs:
         id: branch
         shell: bash
         run: |
-          echo $(git show remotes/origin/starship:.config/fish/store/starship/version)
-          exit 11
-          #EXISTS=$(git show-branch refs/remotes/origin/starship | wc -l)
-          #if [ $EXISTS -ne 0 ]; then
-          #  echo "::set-output name=version::$(git show remotes/origin/starship:.config/fish/store/starship/version)"
-          #fi
+          set +e
+          echo "::set-output name=version::$(git show remotes/origin/starship:.config/fish/store/starship/version)"
       - name: Print versions
         run: |
           echo "starship: ${{ steps.starship.outputs.release }}"
           echo "local: ${{ steps.local.outputs.version }}"
           echo "branch: ${{ steps.branch.outputs.version }}"
+          exit 1
       
   build:
     name: ${{ matrix.job.target }} (${{ matrix.job.os }})
