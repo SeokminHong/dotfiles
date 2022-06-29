@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 mkdir -p ~/.config
-cp -r .config/fish ~/.config
+cp -r .config ~
 cp .iex.exs ~/
 
 mkdir -p ~/bin
