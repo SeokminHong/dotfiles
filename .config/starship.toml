@@ -1,2 +1,9 @@
+command_timeout = 1_000
+
 [container]
 disabled = true
+
+[cmd_duration]
+min_time = 500
+show_milliseconds = true
+format = "⌛ [$duration]($style)"
