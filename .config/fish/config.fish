@@ -14,12 +14,8 @@ switch $platform
     case 'darwin'; set platform "apple-darwin"
 end
 
-# Theme (bobthefish)
-set -g theme_newline_cursor yes
-set -g theme_nerd_fonts yes
-set -g theme_display_date no
-set -g theme_show_exit_status yes
-set -g theme_display_cmd_duration yes
+# Path
+fish_add_path ~/.config/fish/store/starship
 
 # Abbreviations
 abbr --add --global -- cat 'bat'
@@ -28,5 +24,5 @@ abbr --add --global -- ll 'exa -lha'
 abbr --add --global -- tree 'exa --tree -L 2 -alh'
 # abbr --add --global -- cd 'z'
 
-~/.config/fish/store/starship/starship-$architecture-$platform init fish | source
+starship-$architecture-$platform init fish | source
 # zoxide init fish | source
