@@ -27,15 +27,15 @@ jobs:
         id: local
         shell: bash
         run: |
-          if test -f ".config/fish/store/starship/version"; then
-              echo "::set-output name=version::$(cat .config/fish/store/starship/version)"
+          if test -f "store/starship/version"; then
+              echo "::set-output name=version::$(cat store/starship/version)"
           fi
       - name: Branch version
         id: branch
         shell: bash
         run: |
           set +e
-          echo "::set-output name=version::$(git show remotes/origin/starship:.config/fish/store/starship/version)"
+          echo "::set-output name=version::$(git show remotes/origin/starship:store/starship/version)"
       - name: Print versions
         run: |
           echo "starship: ${{ steps.starship.outputs.release }}"
@@ -111,9 +111,9 @@ jobs:
         run: |
           for i in artifacts/*.tar.gz; do tar -xzf $i -C artifacts/; done
           rm artifacts/*.tar.gz
-          mkdir -p .config/fish/store/starship
-          mv artifacts/* .config/fish/store/starship
-          echo ${{ needs.check-version.outputs.starship }} > .config/fish/store/starship/version
+          mkdir -p store/starship
+          mv artifacts/* store/starship
+          echo ${{ needs.check-version.outputs.starship }} > store/starship/version
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
