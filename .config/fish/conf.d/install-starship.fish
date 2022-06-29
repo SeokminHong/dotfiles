@@ -10,4 +10,5 @@ switch $PLATFORM
     case 'darwin'; set -u PLATFORM "apple-darwin"
 end
 
-ln -s "~/.config/fish/store/starship/starship-$ARCH-$PLATFORM" /usr/local/bin/starship
+mkdir -p ~/bin
+ln -s "~/.config/fish/store/starship/starship-$ARCH-$PLATFORM" ~/bin/starship

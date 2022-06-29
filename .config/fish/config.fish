@@ -2,6 +2,9 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
+# Path
+fish_add_path -g ~/bin
+
 # Theme (bobthefish)
 set -g theme_newline_cursor yes
 set -g theme_nerd_fonts yes
@@ -16,5 +19,5 @@ abbr --add --global -- ll 'exa -lha'
 abbr --add --global -- tree 'exa --tree -L 2 -alh'
 # abbr --add --global -- cd 'z'
 
-# zoxide init fish | source
 starship init fish | source
+# zoxide init fish | source
