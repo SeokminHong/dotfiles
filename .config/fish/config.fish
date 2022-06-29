@@ -2,8 +2,17 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
-# Path
-fish_add_path -g ~/bin
+set architecture (uname -m | tr '[:upper:]' '[:lower:]')
+switch $architecture
+    case 'amd64'; set architecture "x86_64"
+    case 'arm64'; set architecture "aarch64"
+end
+
+set platform (uname -s | tr '[:upper:]' '[:lower:]')
+switch $platform
+    case 'linux'; set platform "unknown-linux-gnu"
+    case 'darwin'; set platform "apple-darwin"
+end
 
 # Theme (bobthefish)
 set -g theme_newline_cursor yes
@@ -19,5 +28,5 @@ abbr --add --global -- ll 'exa -lha'
 abbr --add --global -- tree 'exa --tree -L 2 -alh'
 # abbr --add --global -- cd 'z'
 
-"~/.config/fish/store/starship/starship-$ARCH-$PLATFORM" init fish | source
+~/.config/fish/store/starship/starship-$architecture-$platform init fish | source
 # zoxide init fish | source
