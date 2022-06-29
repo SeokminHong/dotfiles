@@ -19,5 +19,5 @@ abbr --add --global -- ll 'exa -lha'
 abbr --add --global -- tree 'exa --tree -L 2 -alh'
 # abbr --add --global -- cd 'z'
 
-starship init fish | source
+"~/.config/fish/store/starship/starship-$ARCH-$PLATFORM" init fish | source
 # zoxide init fish | source
