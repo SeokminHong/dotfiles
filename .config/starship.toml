@@ -6,7 +6,7 @@ disabled = true
 [cmd_duration]
 min_time = 500
 show_milliseconds = true
-format = "⌛ [$duration]($style)"
+format = "祥 [$duration]($style)"
 
 [aws]
 symbol = "  "
@@ -73,6 +73,9 @@ symbol = " "
 
 [spack]
 symbol = "🅢 "
+
+[swift]
+symbol = " "
 
 [rust]
 symbol = " "
