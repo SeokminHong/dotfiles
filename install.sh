@@ -1,3 +1,4 @@
+#!/usr/bin/env sh
 mkdir -p ~/.config
 cp -r .config/fish ~/.config
 cp .iex.exs ~/
@@ -5,15 +6,15 @@ cp .iex.exs ~/
 mkdir -p ~/bin
 
 ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
-switch $ARCH
-    case 'amd64'; ARCH="x86_64"
-    case 'arm64'; ARCH="aarch64"
-end
+case "$ARCH" in
+    amd64) ARCH="x86_64" ;;
+    arm64) ARCH="aarch64" ;;
+esac
 
 PLATFORM=$(uname -s | tr '[:upper:]' '[:lower:]')
-switch $PLATFORM
-    case 'linux'; PLATFORM="unknown-linux-gnu"
-    case 'darwin'; PLATFORM="apple-darwin"
-end
+case "$PLATFORM" in
+    linux) PLATFORM="unknown-linux-gnu" ;;
+    darwin) PLATFORM="apple-darwin" ;;
+esac
 
 cp "store/starship/starship-$ARCH-$PLATFORM" ~/bin/starship
