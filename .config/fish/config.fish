@@ -17,3 +17,4 @@ abbr --add --global -- tree 'exa --tree -L 2 -alh'
 # abbr --add --global -- cd 'z'
 
 # zoxide init fish | source
+starship init fish | source
