@@ -11,4 +11,4 @@ switch $PLATFORM
 end
 
 mkdir -p ~/bin
-ln -s "~/.config/fish/store/starship/starship-$ARCH-$PLATFORM" ~/bin/starship
+cp "~/.config/fish/store/starship/starship-$ARCH-$PLATFORM" ~/bin/starship
