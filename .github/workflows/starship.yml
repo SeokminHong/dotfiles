@@ -57,6 +57,7 @@ jobs:
         if: ${{ matrix.job.build }}
         with:
           repository: starship/starship
+          ref: ${{ needs.check-version.outputs.starship }}
       - uses: actions-rs/toolchain@v1
         if: ${{ matrix.job.build }}
         with:
@@ -96,7 +97,6 @@ jobs:
         with:
           name: artifact
           path: starship-${{ matrix.job.target }}.tar.gz
-      
 
   update-starship:
     runs-on: ubuntu-latest
